@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
