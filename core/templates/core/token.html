@@ -6,7 +6,6 @@
   </div>
   <script>
     const token = window.location.hash && window.location.hash.replace('#token=','')
-    console.log('token:',token)
     document.getElementById("gotoBoard").setAttribute("href", "/board?token="+token)
   </script>
 

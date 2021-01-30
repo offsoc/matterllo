@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from sys import exit
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -145,3 +146,7 @@ TRELLO_APIKEY = "" or os.getenv("TRELLO_APIKEY")
 TRELLO_TOKEN = "" or os.getenv("TRELLO_TOKEN")
 
 TRELLO_TOKEN_EXPIRATION = "never"
+
+if not TRELLO_APIKEY:
+    print("missing TRELLO_APIKEY")
+    exit(1)

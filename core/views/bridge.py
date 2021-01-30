@@ -11,18 +11,15 @@ from core.models import Board, Webhook, Bridge
 from core.forms import BridgeCreateForm
 
 
-@method_decorator(login_required, name="dispatch")
 class BridgeListView(ListView):
     model = Bridge
     template_name = "core/index.html"
 
 
-@method_decorator(login_required, name="dispatch")
 class BridgeDetailView(DetailView):
     model = Bridge
 
 
-@method_decorator(login_required, name="dispatch")
 class BridgeCreateView(SuccessMessageMixin, CreateView):
     model = Bridge
     form_class = BridgeCreateForm

@@ -10,12 +10,10 @@ from core.models import Webhook, Board
 from core.forms import WebhookCreateForm
 
 
-@method_decorator(login_required, name="dispatch")
 class WebhookDetailView(DetailView):
     model = Webhook
 
 
-@method_decorator(login_required, name="dispatch")
 class WebhookCreateView(SuccessMessageMixin, CreateView):
     model = Webhook
     form_class = WebhookCreateForm
