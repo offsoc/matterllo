@@ -15,22 +15,23 @@ from core.hook.list import Hook as HookList
 from core.hook.checklist import Hook as HookChecklist
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class TrelloCallbacksView(View, HookCard, HookList, HookChecklist):
-
     def __init__(self, *args, **kwargs):
-        self.supported_action = HookCard.actions() + HookList.actions() + HookChecklist.actions()
+        self.supported_action = (
+            HookCard.actions() + HookList.actions() + HookChecklist.actions()
+        )
         return super(TrelloCallbacksView, self).__init__(*args, **kwargs)
 
     def head(self, request, board_id):
         return HttpResponse()
 
     def post(self, request, board_id):
-        json_data = loads(request.body.decode('utf-8'))
+        json_data = loads(request.body.decode("utf-8"))
 
-        action = json_data['action']
-        action_type = action['type']
-        board = slugify(json_data['model']['name'])
+        action = json_data["action"]
+        action_type = action["type"]
+        board = slugify(json_data["model"]["name"])
 
         bridges = Bridge.objects.filter(board__id=board_id)
         if not bridges:
@@ -38,7 +39,11 @@ class TrelloCallbacksView(View, HookCard, HookList, HookChecklist):
             return HttpResponse()
 
         if action_type not in self.supported_action:
-            print("trello action not implemented :: action={}".format(action_type))
+            print(
+                "trello action not implemented :: action={}".format(
+                    action_type
+                )
+            )
             return HttpResponse()
 
         action_parser = getattr(self, action_type)
@@ -46,12 +51,22 @@ class TrelloCallbacksView(View, HookCard, HookList, HookChecklist):
 
         for bridge in bridges:
             if action_type not in bridge.events:
-                print("no subscribe for this action :: board={} :: action={}".format(board, action_type))
+                print(
+                    "no subscribe for this action :: board={} :: action={}".format(
+                        board, action_type
+                    )
+                )
                 continue
 
             try:
-                print("subscribe for this action :: board={} :: action={}".format(board, action_type))
-                mwh = Webhook(*bridge.webhook.incoming_webhook_url.split("/hooks/"))
+                print(
+                    "subscribe for this action :: board={} :: action={}".format(
+                        board, action_type
+                    )
+                )
+                mwh = Webhook(
+                    *bridge.webhook.incoming_webhook_url.split("/hooks/")
+                )
                 mwh.username = bridge.webhook.username
                 mwh.icon_url = bridge.webhook.icon_url
                 mwh.send(payload)

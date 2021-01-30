@@ -7,10 +7,10 @@ from formtools.wizard.views import SessionWizardView
 from core.forms import BridgeCreateForm, WebhookCreateForm
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class MatterlloWizard(SessionWizardView):
     form_list = [WebhookCreateForm, BridgeCreateForm]
-    template_name = 'core/wizard.html'
+    template_name = "core/wizard.html"
 
     def done(self, form_list, **kwargs):
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")

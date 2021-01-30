@@ -10,7 +10,9 @@ class Board(models.Model):
 
     name = models.CharField(max_length=100)
     webhook_activate = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
     trello_board_id = models.CharField(max_length=100)
     trello_token = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,21 +26,24 @@ class Board(models.Model):
         return self.name
 
     def __unicode__(self):
-        return u"{}".format(self.name)
+        return "{}".format(self.name)
+
 
 class Webhook(models.Model):
 
     name = models.CharField(max_length=50)
     incoming_webhook_url = models.CharField(max_length=300, unique=True)
 
-    icon_url = models.CharField(max_length=250, default='http://maffrigby.com/wp-content/uploads/2015/05/trello-icon.png')
-    username = models.CharField(max_length=30, default='Matterllo')
+    icon_url = models.CharField(
+        max_length=250,
+        default="http://maffrigby.com/wp-content/uploads/2015/05/trello-icon.png",
+    )
+    username = models.CharField(max_length=30, default="Matterllo")
 
     board = models.ManyToManyField(Board)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         ordering = ["name"]
@@ -48,35 +53,38 @@ class Webhook(models.Model):
         return "{} :: {}".format(self.name, self.incoming_webhook_url)
 
     def __unicode__(self):
-        return u"{} :: {}".format(self.name, self.incoming_webhook_url)
+        return "{} :: {}".format(self.name, self.incoming_webhook_url)
 
 
 class Bridge(models.Model):
     EVENT_CHOICES = (
         # card
-        ('addAttachmentToCard', 'addAttachmentToCard'),
-        ('addLabelToCard', 'addLabelToCard'),
-        ('addMemberToCard', 'addMemberToCard'),
-        ('commentCard', 'commentCard'),
-        ('copyCard', 'copyCard'),
-        ('createCard', 'createCard'),
-        ('emailCard', 'emailCard'),
-        ('moveCardFromBoard', 'moveCardFromBoard'),
-        ('moveCardToBoard', 'moveCardToBoard'),
-        ('removeLabelFromCard', 'removeLabelFromCard'),
-        ('removeMemberFromCard', 'removeMemberFromCard'),
-        ('updateCard', 'updateCard (include moveCardToList, renameCard, renameCardDesc, updateCardDueDate, removeCardDueDate, archiveCard, unarchiveCard)'),
+        ("addAttachmentToCard", "addAttachmentToCard"),
+        ("addLabelToCard", "addLabelToCard"),
+        ("addMemberToCard", "addMemberToCard"),
+        ("commentCard", "commentCard"),
+        ("copyCard", "copyCard"),
+        ("createCard", "createCard"),
+        ("emailCard", "emailCard"),
+        ("moveCardFromBoard", "moveCardFromBoard"),
+        ("moveCardToBoard", "moveCardToBoard"),
+        ("removeLabelFromCard", "removeLabelFromCard"),
+        ("removeMemberFromCard", "removeMemberFromCard"),
+        (
+            "updateCard",
+            "updateCard (include moveCardToList, renameCard, renameCardDesc, updateCardDueDate, removeCardDueDate, archiveCard, unarchiveCard)",
+        ),
         # checklist
-        ('addChecklistToCard', 'addChecklistToCard'),
-        ('createCheckItem', 'createCheckItem'),
-        ('updateCheckItemStateOnCard', 'updateCheckItemStateOnCard'),
+        ("addChecklistToCard", "addChecklistToCard"),
+        ("createCheckItem", "createCheckItem"),
+        ("updateCheckItemStateOnCard", "updateCheckItemStateOnCard"),
         # list
-        ('archiveList', 'archiveList'),
-        ('createList', 'createList'),
-        ('moveListFromBoard', 'moveCardFromBoard'),
-        ('moveListToBoard', 'moveListToBoard'),
-        ('renameList', 'renameList'),
-        ('updateList', 'updateList'),
+        ("archiveList", "archiveList"),
+        ("createList", "createList"),
+        ("moveListFromBoard", "moveCardFromBoard"),
+        ("moveListToBoard", "moveListToBoard"),
+        ("renameList", "renameList"),
+        ("updateList", "updateList"),
     )
 
     webhook = models.ForeignKey(Webhook, on_delete=models.CASCADE)
@@ -91,10 +99,10 @@ class Bridge(models.Model):
         verbose_name_plural = "bridges"
 
     def __str__(self):
-        return '{}::{}'.format(self.board, self.webhook)
+        return "{}::{}".format(self.board, self.webhook)
 
     def __unicode__(self):
-        return u'{}::{}'.format(self.board, self.webhook)
+        return "{}::{}".format(self.board, self.webhook)
 
     def events_as_list(self):
         return literal_eval(self.events)
