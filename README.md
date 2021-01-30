@@ -7,8 +7,23 @@ Simple integration between Trello and Mattermost: send Trello activity notificat
 ## Common part
 [**Here**](COMMON.md)
 
-## Linux web server install
-[**Here**](LINUX.md)
+## Usage
+### via Docker
+```
+$ make help
+$ make local
+```
 
-## Docker install
-[**Here**](DOCKER.md)
+## via Python
+```
+$ export TRELLO_APIKEY=<your_api_key>
+$ virtualenv venv
+$ source venv/bin/activate
+
+$ (venv) pip install -r requirements.txt
+$ (venv) python manage.py migrate
+$ (venv) python manage.py loaddata admin
+$ (venv) python manage.py runserver
+```
+
+More details [here](FAQ.md)

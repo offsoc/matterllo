@@ -1,14 +1,22 @@
-FROM python:2
+# syntax=docker/dockerfile:1.0.0-experimental
+FROM python:3.7-buster
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get upgrade -y
 
-COPY requirements_base.txt /usr/src/app
-RUN pip install --no-cache-dir -r requirements_base.txt
+COPY requirements.txt .
+RUN --mount=type=ssh pip3 install -r requirements.txt
 
-COPY . /usr/src/app
+RUN groupadd -g 1000 matterllo && useradd -rm -d /home/matterllo -s /bin/bash -g matterllo -u 1000 matterllo
 
-RUN python manage.py makemigrations
+WORKDIR /home/matterllo
+COPY --chown=matterllo:matterllo matterllo matterllo/
+COPY --chown=matterllo:matterllo core core/
+COPY --chown=matterllo:matterllo manage.py .
+COPY --chown=matterllo:matterllo docker-entrypoint.sh .
 
 EXPOSE 8000
-CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+USER 1000:1000
+ENV PYTHONUNBUFFERED 1
+
+ENTRYPOINT ["sh", "docker-entrypoint.sh"]
