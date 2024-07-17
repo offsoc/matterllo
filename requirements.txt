@@ -1,9 +1,10 @@
+Django==3.2.25
 astroid==1.6.0
 certifi==2024.7.4
 chardet==3.0.4
-Django==3.2.25
-django-crispy-forms==1.7.2
+django-crispy-forms==1.8.1
 django-formtools==2.1
+django-utils-six==2.0
 humanize==0.5.1
 idna==3.7
 isort==4.2.15
@@ -15,8 +16,8 @@ py-trello==0.7.0
 pylint==1.8.1
 python-dateutil==2.6.0
 pytz==2018.9
-requests==2.32.0
 requests-oauthlib==0.7.0
+requests==2.32.0
 six==1.11.0
 urllib3==1.26.19
 whitenoise==3.2.2
